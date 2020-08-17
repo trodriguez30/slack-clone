@@ -6,26 +6,55 @@ import {
   MailOutlined
 } from "@ant-design/icons";
 import { Form, Input, Tooltip, Row, Col, Button, message } from "antd";
+import md5 from "md5";
+import React, { useState, useEffect } from "react";
+import { Link, useHistory } from "react-router-dom";
 
 import firebase from "../../firebase";
-import React from "react";
-import { Link, useHistory } from "react-router-dom";
 
 export default function Register() {
   const history = useHistory();
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+  const [values, setValues] = useState(false);
+  const [createdUser, setCreatedUser] = useState(false);
+
+  useEffect(() => {
+    if (values && createdUser) {
+      message.success("User created successfully!");
+      updateUser();
+    }
+  }, [values, createdUser]);
 
   const onFinish = values => {
-    console.log("Received values of form: ", values);
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(values.email, values.password)
-      .then(createdUser => {
-        history.push("/");
-      })
-      .catch(err => {
-        message.error("Sorry, please try again!");
+    setLoading(true);
+    createUser(values);
+  };
+
+  const createUser = async values => {
+    try {
+      let createdUser = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(values.email, values.password);
+      setValues(values);
+      setCreatedUser(createdUser);
+    } catch (err) {
+      message.error(err.message);
+      setLoading(false);
+    }
+  };
+
+  const updateUser = async () => {
+    try {
+      await createdUser.user.updateProfile({
+        displayName: values.nickname,
+        photoURL: `http://gravatar/avatar/${md5(createdUser.user.email)}`
       });
+      setLoading(false);
+    } catch (err) {
+      message.error(err.message);
+      setLoading(false);
+    }
   };
 
   const layout = {
@@ -158,7 +187,7 @@ export default function Register() {
             </Form.Item>
 
             <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit" block>
+              <Button loading={loading} type="primary" htmlType="submit" block>
                 Register
               </Button>
               Already a user? <Link to="/login">Login!</Link>
