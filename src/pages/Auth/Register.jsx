@@ -72,8 +72,9 @@ export default function Register() {
         name: createdUser.user.displayName,
         avatar: createdUser.user.photoURL
       });
-      message.success("User created successfully!");
+      message.success("User created successfully! Please LogIn");
       setLoading(false);
+      history.push("/login");
     } catch (err) {
       message.error("Try again please!");
       setLoading(false);
