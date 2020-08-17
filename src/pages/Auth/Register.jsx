@@ -17,14 +17,29 @@ export default function Register() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState(false);
-  const [createdUser, setCreatedUser] = useState(false);
+  const [createdUser, setCreatedUser] = useState(null);
+  const [updatedUser, setUpdatedUser] = useState(null);
+  const [usersRef, setUserRef] = useState(firebase.database().ref("users"));
 
   useEffect(() => {
     if (values && createdUser) {
-      message.success("User created successfully!");
       updateUser();
     }
+    if (
+      createdUser &&
+      createdUser.user.displayName &&
+      createdUser.user.photoURL
+    ) {
+      message.success("User created successfully!");
+      setLoading(false);
+    }
   }, [values, createdUser]);
+
+  useEffect(() => {
+    if (updatedUser) {
+      saveUser();
+    }
+  }, [updatedUser]);
 
   const onFinish = values => {
     setLoading(true);
@@ -48,11 +63,27 @@ export default function Register() {
     try {
       await createdUser.user.updateProfile({
         displayName: values.nickname,
-        photoURL: `http://gravatar/avatar/${md5(createdUser.user.email)}`
+        photoURL: `https://gravatar.com/avatar/${md5(
+          createdUser.user.email
+        )}?d=identicon`
       });
-      setLoading(false);
+      setUpdatedUser(true);
     } catch (err) {
       message.error(err.message);
+      setLoading(false);
+    }
+  };
+
+  const saveUser = () => {
+    try {
+      usersRef.child(createdUser.user.uid).set({
+        name: createdUser.user.displayName,
+        avatar: createdUser.user.photoURL
+      });
+      message.success("User created successfully!");
+      setLoading(false);
+    } catch (err) {
+      message.error("Try again please!");
       setLoading(false);
     }
   };
