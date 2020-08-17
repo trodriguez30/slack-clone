@@ -25,14 +25,6 @@ export default function Register() {
     if (values && createdUser) {
       updateUser();
     }
-    if (
-      createdUser &&
-      createdUser.user.displayName &&
-      createdUser.user.photoURL
-    ) {
-      message.success("User created successfully!");
-      setLoading(false);
-    }
   }, [values, createdUser]);
 
   useEffect(() => {
