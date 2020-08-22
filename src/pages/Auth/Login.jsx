@@ -5,14 +5,18 @@ import {
   LockOutlined,
   MailOutlined
 } from "@ant-design/icons";
-import { Form, Input, Tooltip, Row, Col, Button, message } from "antd";
-import md5 from "md5";
+import { Form, Input, Row, Col, Button, message } from "antd";
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
+import { Link, useHistory } from "react-router-dom";
+import actions from "../../redux/auth/actions";
 import firebase from "../../firebase";
 
+const { userLogin } = actions;
+
 export default function Login() {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -23,6 +27,14 @@ export default function Login() {
     if (loginUser) {
       message.success("Login Successfully!");
       setLoading(false);
+      const { displayName, email, phoneNumber, photoURL, uid } = loginUser.user;
+      const userInfo = {
+        displayName,
+        email,
+        phoneNumber,
+        photoURL
+      };
+      dispatch(userLogin({ userInfo, uid }));
       history.push("/");
     }
   }, [loginUser]);

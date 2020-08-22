@@ -1,8 +1,8 @@
 import React from "react";
-import "./App.css";
+import "./Dash.css";
 
-const App = () => {
+const Dash = () => {
   return <div>React app</div>;
 };
 
-export default App;
+export default Dash;
