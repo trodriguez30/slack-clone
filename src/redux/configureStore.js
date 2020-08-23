@@ -6,7 +6,7 @@ import createSagaMiddleware from 'redux-saga';
 import thunk from 'redux-thunk';
 
 import createRootReducer from './configureReducer';
-import createRootSaga from './configureSaga';
+// import createRootSaga from './configureSaga';
 
 const sagaMiddleware = createSagaMiddleware();
 const middlewares = [sagaMiddleware, thunk];
@@ -26,7 +26,7 @@ export default function configureStore(preloadedState) {
 
   const persistor = persistStore(store);
 
-  sagaMiddleware.run(createRootSaga);
+  // sagaMiddleware.run(createRootSaga);
 
   return { store, persistor };
 }

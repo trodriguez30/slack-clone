@@ -1,7 +1,5 @@
 import {
-  QuestionCircleOutlined,
   SlackOutlined,
-  UserOutlined,
   LockOutlined,
   MailOutlined
 } from "@ant-design/icons";
@@ -20,7 +18,6 @@ export default function Login() {
   const history = useHistory();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [values, setValues] = useState(false);
   const [loginUser, setLoginUser] = useState(null);
 
   useEffect(() => {
