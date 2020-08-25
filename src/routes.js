@@ -7,8 +7,8 @@ import {
   Switch,
   useLocation
 } from "react-router-dom";
-import Loader from "./pages/utilities/Loader";
-import ErrorPage from "./pages/utilities/ErrorPage";
+import Loader from "./pages/Utilities/Loader";
+import ErrorPage from "./pages/Utilities/ErrorPage";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 
