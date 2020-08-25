@@ -10,7 +10,7 @@ import md5 from "md5";
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 
-import firebase from "../../firebase";
+import firebase from "../../lib/firebase";
 
 export default function Register() {
   const history = useHistory();

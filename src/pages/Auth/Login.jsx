@@ -1,24 +1,32 @@
-import {
-  SlackOutlined,
-  LockOutlined,
-  MailOutlined
-} from "@ant-design/icons";
+import { SlackOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Form, Input, Row, Col, Button, message } from "antd";
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { Link, useHistory } from "react-router-dom";
+import { Link, useLocation, useHistory, Redirect } from "react-router-dom";
 import actions from "../../redux/auth/actions";
-import firebase from "../../firebase";
+import firebase from "../../lib/firebase";
 
 const { userLogin } = actions;
 
 export default function Login() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
   const [form] = Form.useForm();
+  const { from } = location.state || { from: { pathname: "/dashboard" } };
+  const authenticated = useSelector(state => state.Auth.uid);
+
   const [loading, setLoading] = useState(false);
   const [loginUser, setLoginUser] = useState(null);
+  const [redirect, setRedirect] = React.useState(false);
+
+  useEffect(() => {
+    if (authenticated) {
+      setRedirect(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (loginUser) {
@@ -32,7 +40,7 @@ export default function Login() {
         photoURL
       };
       dispatch(userLogin({ userInfo, uid }));
-      history.push("/");
+      history.push("/dashboard");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loginUser]);
@@ -61,6 +69,10 @@ export default function Login() {
   const tailLayout = {
     wrapperCol: { xs: { span: 24, offset: 0 }, sm: { offset: 0, span: 24 } }
   };
+
+  if (redirect) {
+    return <Redirect to={from} />;
+  }
 
   return (
     <>
@@ -132,7 +144,7 @@ export default function Login() {
               <Button loading={loading} type="primary" htmlType="submit" block>
                 Log In
               </Button>
-              Don't have an account?<Link to="/login">Sign up</Link>
+              Don't have an account?<Link to="/login"> Sign Up</Link>
             </Form.Item>
           </Form>
         </Col>

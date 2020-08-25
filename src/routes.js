@@ -7,10 +7,10 @@ import {
   Switch,
   useLocation
 } from "react-router-dom";
+import Loader from "./pages/utilities/Loader";
+import ErrorPage from "./pages/utilities/ErrorPage";
 
-import ErrorPage from "./ErrorPage";
-
-const Dashboard = lazy(() => import("./pages/Dash"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
 
 const publicRoutes = [
   {
@@ -47,7 +47,7 @@ function PrivateRoute({ children, ...rest }) {
 export default function Routes() {
   return (
     <ErrorPage>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader />}>
         <Router>
           <Switch>
             {publicRoutes.map((route, index) => (
@@ -55,7 +55,7 @@ export default function Routes() {
                 <route.component />
               </Route>
             ))}
-            <PrivateRoute path="/dash">
+            <PrivateRoute path="/dashboard">
               <Dashboard />
             </PrivateRoute>
           </Switch>
