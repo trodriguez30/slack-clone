@@ -34,6 +34,7 @@ export default function Login() {
       dispatch(userLogin({ userInfo, uid }));
       history.push("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loginUser]);
 
   const onFinish = values => {

@@ -14,23 +14,25 @@ import firebase from "../../firebase";
 
 export default function Register() {
   const history = useHistory();
+  const usersRef = firebase.database().ref("users");
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState(false);
   const [createdUser, setCreatedUser] = useState(null);
   const [updatedUser, setUpdatedUser] = useState(null);
-  const [usersRef, setUserRef] = useState(firebase.database().ref("users"));
 
   useEffect(() => {
     if (values && createdUser) {
       updateUser();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values, createdUser]);
 
   useEffect(() => {
     if (updatedUser) {
       saveUser();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updatedUser]);
 
   const onFinish = values => {
