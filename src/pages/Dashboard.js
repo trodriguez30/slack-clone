@@ -3,7 +3,7 @@ import {} from "@ant-design/icons";
 
 import React from "react";
 
-import HeaderDash from "../components/Header/HeaderDash";
+import Header from "../components/Header/Header";
 import SidePanel from "../components/SidePanel/SidePanel";
 import Messages from "../components/Messages/Messages";
 import MetaPanel from "../components/MetaPanel/MetaPanel";
@@ -11,14 +11,14 @@ import MetaPanel from "../components/MetaPanel/MetaPanel";
 import "./Dash.css";
 
 const { SubMenu } = Menu;
-const { Header, Content, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 function Dash() {
   return (
     <Layout>
       <SidePanel />
       <Layout>
-        <HeaderDash />
+        <Header />
         <Content style={{ margin: "24px 16px 0" }}>
           <div
             className="site-layout-background"

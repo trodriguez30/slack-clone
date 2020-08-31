@@ -18,11 +18,11 @@ export default function reducer(state = initState, action) {
       };
 
     case actions.USER_LOGOUT:
-      const { authenticated, info, token } = initState;
+      const { authenticated, info, uid } = initState;
       return {
         ...state,
         info,
-        token,
+        uid,
         authenticated
       };
 

@@ -7,9 +7,8 @@ const actions = {
     payload
   }),
 
-  userLogout: payload => ({
-    type: actions.USER_LOGOUT,
-    payload
+  userLogout: () => ({
+    type: actions.USER_LOGOUT
   })
 };
 export default actions;
