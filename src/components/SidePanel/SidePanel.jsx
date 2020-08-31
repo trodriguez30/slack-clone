@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Layout } from "antd";
 import UserPanel from "./UserPanel";
+import Channels from "./Channels";
 import "./sidePanel.css";
 
 const { Sider } = Layout;
@@ -25,6 +26,7 @@ function SidePanel() {
       collapsed={collapsed}
     >
       <UserPanel broken={broken} />
+      <Channels />
     </Sider>
   );
 }

@@ -9,7 +9,6 @@ const initState = {
 export default function reducer(state = initState, action) {
   switch (action.type) {
     case actions.USER_AUTH:
-      console.log(action);
       return {
         ...state,
         info: action.payload.userInfo,

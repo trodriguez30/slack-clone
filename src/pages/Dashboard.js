@@ -1,17 +1,16 @@
-import { Layout, Menu, Breadcrumb } from "antd";
+import { Layout } from "antd";
 import {} from "@ant-design/icons";
 
 import React from "react";
 
 import Header from "../components/Header/Header";
 import SidePanel from "../components/SidePanel/SidePanel";
-import Messages from "../components/Messages/Messages";
-import MetaPanel from "../components/MetaPanel/MetaPanel";
+// import Messages from "../components/Messages/Messages";
+// import MetaPanel from "../components/MetaPanel/MetaPanel";
 
 import "./Dash.css";
 
-const { SubMenu } = Menu;
-const { Content, Sider } = Layout;
+const { Content } = Layout;
 
 function Dash() {
   return (
