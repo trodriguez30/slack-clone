@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, Modal, Form, Input, Button } from "antd";
 import { AppstoreOutlined, PlusOutlined } from "@ant-design/icons";
+import firebase from "../../lib/firebase";
+import { useDispatch, useSelector } from "react-redux";
 
 const layout = {
   labelCol: { span: 8 },
@@ -13,14 +15,44 @@ const tailLayout = {
 const { SubMenu, Item } = Menu;
 export default function Channels() {
   const rootSubmenuKeys = ["sub1"];
-
+  const channelsRef = firebase.database().ref("channels");
   const [channelList, setChannelList] = useState(["User"]);
+
+  const photoURL = useSelector(state => state.Auth.info.photoURL);
+  const displayName = useSelector(state => state.Auth.info.displayName);
+
   const [channel, setChannel] = useState({
     name: "",
     details: ""
   });
   const [openKeys, setOpenKeys] = useState(["sub2"]);
   const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    if (channel.name && channel.details) {
+      const { key } = channelsRef.push();
+      const newChannel = {
+        id: key,
+        name: channel.name,
+        details: channel.details,
+        createdBy: {
+          name: displayName,
+          avatar: photoURL
+        }
+      };
+      channelsRef
+        .child(key)
+        .update(newChannel)
+        .then(() => {
+          setChannel({ name: "", details: "" });
+          setModalVisible(false);
+          console.log("channel added");
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }, [channel]);
 
   const onOpenChange = openKeys => {
     const latestOpenKey = openKeys.find(key => openKeys.indexOf(key) === -1);
@@ -37,7 +69,7 @@ export default function Channels() {
   };
 
   const onFinish = values => {
-    console.log("Success:", values);
+    setChannel(values);
   };
 
   return (
@@ -73,11 +105,7 @@ export default function Channels() {
         onCancel={handleModal}
         footer={[]}
       >
-        <Form
-          {...layout}
-          name="basic"
-          onFinish={onFinish}
-        >
+        <Form {...layout} name="basic" onFinish={onFinish}>
           <Form.Item
             label="Channel's Name"
             name="name"
